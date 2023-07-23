@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import {AiFillEye ,AiFillEyeInvisible } from "react-icons/ai";
 import styled from '@emotion/styled';
 import OAuth from '../components/OAuth';
 
 const srcImg="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=773&q=80";
 
-const InputForgotPassword=styled.input`
+const InputSignUp=styled.input`
   width: 100%;
   margin-bottom: 1.5rem;
   padding-left: 1rem  ;
@@ -26,7 +27,8 @@ const InputForgotPassword=styled.input`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 `;
-const LinkSignUp = styled.a`
+
+const LinkSignIn = styled.a`
   margin-left: 0.25rem; /* 4px */
   --tw-text-opacity: 1;
   color: rgb(220, 38, 38, var(--tw-text-opacity));
@@ -40,22 +42,9 @@ const LinkSignUp = styled.a`
     color: rgb(185, 28, 28, var(--tw-text-opacity));
   }
 `;
-const LinkSignIn = styled.a`
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-  cursor: pointer;
-
-  &:hover {
-    --tw-text-opacity: 1;
-    color: rgb(29 78 216 / var(--tw-text-opacity));
-  }
-`;
 
 
-const H1ForgotPassword=styled.h1`
+const H1SignUp=styled.h1`
   font-size: 1.875rem/* 30px */;
   line-height: 2.25rem/* 36px */;
   text-align: center;
@@ -107,7 +96,9 @@ const ContainerForm=styled.div`
   }
 `;
 
-
+const IconDiv=styled.div`
+  position: relative;
+`;
 
 const ContainerTextLinks=styled.div`
   display: flex;
@@ -121,7 +112,7 @@ const ContainerTextLinks=styled.div`
   }
 `;
 
-const ResetPasswordButton=styled.button`
+const SignUpButton=styled.button`
 width: 100%;
 --tw-bg-opacity: 1;
 background-color: rgb(37 99 235 / var(--tw-bg-opacity));
@@ -187,35 +178,49 @@ const ORdiv=styled.div`
   }
 `;
 
-function ForgotPassword() {
+function SignUp() {
 
-  const [email,setEmail]=useState("");
+  const [formData,setFormData]=useState({email:"",password:"",name:""});
+  const {email,password,name}=formData;
+
+  const [showPassword,setShowPassword]=useState(false);
 
   const handleChange=(e)=>{
-    const mail=e.target.value;
-    setEmail(mail);
+    setFormData((current)=>({
+      ...current,
+      [e.target.id]:[e.target.value]
+    }))
   }
 
+  const handlePasswordClick=()=>{
+    setShowPassword((current)=>!current);
+  }
   return (
     <section>
-      <H1ForgotPassword>Forgot Password</H1ForgotPassword>
+      <H1SignUp>Sign Up</H1SignUp>
       <ContainerDiv>
         <ContainerImage>
             <img className=' w-full rounded-2xl ' src={srcImg} alt="key" ></img>
         </ContainerImage>
         <ContainerForm>
           <form>
-            <InputForgotPassword type='email' id="email" value={email} placeholder='Email address' onChange={handleChange}/>
+            <InputSignUp type='text' id="name" value={name} placeholder='Full name' onChange={handleChange}/>
+            <InputSignUp type='email' id="email" value={email} placeholder='Email address' onChange={handleChange}/>
+            
+            <IconDiv>
+
+              <InputSignUp type={showPassword?'text':'password'} id="password" value={password} placeholder='Password' onChange={handleChange}/>
+              
+              {showPassword ? <AiFillEyeInvisible className='absolute right-3 top-3 text-xl cursor-pointer' onClick={handlePasswordClick}/> : <AiFillEye className='absolute right-3 top-3  text-xl cursor-pointer' onClick={handlePasswordClick}/>}
+            </IconDiv>
+
             <ContainerTextLinks>
-              <p>Don't have an account?
-                <LinkSignUp href="/sign-up">Register</LinkSignUp>
-              </p>
-              <p>
-                <LinkSignIn href="/sign-in">Sign In instead?</LinkSignIn>
+              <p>Already have an  account?
+                <LinkSignIn href="/sign-in">Sign In</LinkSignIn>
               </p>
             </ContainerTextLinks>
             
-            <ResetPasswordButton type='submit'>Send Rest Password</ResetPasswordButton>
+            <SignUpButton type='submit'>Sign-Up</SignUpButton>
             <ORdiv>
               <p className='text-center font-semibold mx-4'>OR</p>
             </ORdiv>
@@ -227,5 +232,4 @@ function ForgotPassword() {
   )
 }
 
-
-export default ForgotPassword;
+export default SignUp;
