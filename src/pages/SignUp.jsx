@@ -5,7 +5,7 @@ import { InputForm ,LinkRed, H1,ContainerDiv , ContainerImage , ContainerForm,Ic
 import {getAuth,createUserWithEmailAndPassword,updateProfile} from "firebase/auth";
 import {db} from "../firebase";
 import { serverTimestamp, setDoc ,doc } from 'firebase/firestore';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 

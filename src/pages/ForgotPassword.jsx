@@ -3,7 +3,7 @@ import OAuth from '../components/OAuth';
 import { toast } from 'react-toastify';
 import { InputForm ,LinkRed,LinkBlue, H1,ContainerDiv , ContainerImage , ContainerForm,ContainerTextLinks , SubmitFormButton , ORdiv } from '../styledSaas/SignCss';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router-dom';
 
 const srcImg="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=773&q=80";
 
@@ -12,7 +12,7 @@ const srcImg="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b23
 function ForgotPassword() {
 
   const [email,setEmail]=useState("");
-  const nevigation=useNavigate();
+  // const nevigation=useNavigate();
 
   const handleChange=(e)=>{
     const mail=e.target.value;

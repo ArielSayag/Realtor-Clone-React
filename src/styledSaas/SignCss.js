@@ -1,5 +1,17 @@
 import styled from "@emotion/styled";
 
+
+export const Section=styled.section`
+  max-width: 72rem/* 1152px */;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+`;
+
 export const InputForm=styled.input`
   width: 100%;
   margin-bottom: 1.5rem;
@@ -21,6 +33,21 @@ export const InputForm=styled.input`
   transition-duration: 150ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
+`;
+
+export const SpanRed = styled.span`
+  margin-left: 0.25rem; /* 4px */
+  --tw-text-opacity: 1;
+  color: rgb(220, 38, 38, var(--tw-text-opacity));
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+
+  &:hover {
+    --tw-text-opacity: 1;
+    color: rgb(185, 28, 28, var(--tw-text-opacity));
+  }
 `;
 
 export const LinkRed = styled.a`
@@ -88,6 +115,25 @@ export const ContainerImage = styled.div`
 
   @media (min-width: 768px) {
     margin-bottom: 1.5rem; /* 24px */
+  }
+`;
+export const ContainerFormProfile=styled.div`
+  width: 100%;
+  margin-top:24px;
+  padding-left: 10px;
+  padding-right: 10px;
+  @media (min-width: 768px) {
+      width: 67%;
+     
+    }
+  
+  @media (min-width: 1024px) {
+      width: 50%; 
+  }
+
+  @media (min-width: 1024px) {
+    padding-left: 0.75rem/* 12px */;
+    padding-right: 0.75rem/* 12px */;
   }
 `;
 
