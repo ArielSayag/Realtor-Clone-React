@@ -1,30 +1,25 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
 import { useLocation , useNavigate} from 'react-router';
-
-const LiRoute=styled.li`
-  padding-top: 0.75rem;
-  cursor: pointer;
-  padding-bottom: 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-  border-bottom-width: 3px;
-  border-bottom-color: transparent;
-
-  &.active {
-    color: black;
-    border-bottom-color: red;
-  }
-`;
+import {LiRoute} from "../styledSaas/HeaderCss";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function Header() {
 
   const nevigate=useNavigate();
-
+  const [pageState,setPageState]=useState("Sign in");
   const location=useLocation();
+
+  const auth=getAuth();
+  useEffect(()=>{
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        setPageState("Profile");
+      }else{
+        setPageState("Sign in");
+      }
+    })
+  },[auth])
+
   const pathMatchRoute=(route)=>{
     if(route===location.pathname){
       return true;
@@ -43,7 +38,10 @@ function Header() {
           <ul className='flex space-x-10'>
             <LiRoute onClick={()=>nevigate("/")} className={pathMatchRoute('/') ? 'active' : ''}>Home</LiRoute>
             <LiRoute onClick={()=>nevigate("/offers")} className={pathMatchRoute("/offers") ? 'active' : ''}>Offers</LiRoute>
-            <LiRoute onClick={()=>nevigate("/sign-in")} className={pathMatchRoute("/sign-in") ? 'active' : ''}>Sign In</LiRoute>
+            <LiRoute onClick={()=>nevigate("/profile")} 
+                    className={pathMatchRoute("/sign-in")||pathMatchRoute("/profile")? 'active' : ''}>
+              {pageState}
+            </LiRoute>
           </ul>
         </div>
       </header>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {H1,ContainerFormProfile,InputForm,ContainerTextLinks,SpanRed,LinkBlue,Section} from "../styledSaas/SignCss";
 import {FcHome} from "react-icons/fc";
-import { getAuth, updateCurrentUser, updateProfile } from 'firebase/auth';
+import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -59,7 +59,7 @@ export default function Profile() {
       <ContainerFormProfile>
         <form onSubmit={handleSubmit}>
           <InputForm type='text' disabled={!changeDetails} id="name" value={name}  onChange={handleChange} className={changeDetails?'opacity-100':'opacity-60'} />
-          <InputForm type='email' disabled={!changeDetails} id="email" value={email}  onChange={handleChange} className={changeDetails?'opacity-100':'opacity-60'} />
+          <InputForm type='email' disabled id="email" value={email}  onChange={handleChange} className='opacity-60' />
           
     
           <ContainerTextLinks>
