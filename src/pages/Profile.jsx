@@ -6,16 +6,17 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import {Link} from "react-router-dom";
 
 export default function Profile() {
   const auth=getAuth();
-  const nevigate=useNavigate();
+  const navigate=useNavigate();
   //get data from firebase
   const [formData,setFormData]=useState({name:auth.currentUser.displayName,email:auth.currentUser.email});
   const {name,email}=formData;
   const [changeDetails,setChangeDetails]=useState(false);
 
-  // chnage detail in the useState
+  // change detail in the useState
   const handleChange=(e)=>{
     setFormData((current)=>({
       ...current,
@@ -42,26 +43,18 @@ export default function Profile() {
       toast.error("Could not update the profile details")
     }
   }
-
-
-  const handleSubmit=(e)=>{
-    e.preventDefualt();
-  }
-
   //LogOut
   const handleSignOut=()=>{
     auth.signOut();
-    nevigate("/");
+    navigate("/");
   }
   return (
     <Section>
     <H1>My Profile</H1>
       <ContainerFormProfile>
-        <form onSubmit={handleSubmit}>
+        <form >
           <InputForm type='text' disabled={!changeDetails} id="name" value={name}  onChange={handleChange} className={changeDetails?'opacity-100':'opacity-60'} />
           <InputForm type='email' disabled id="email" value={email}  onChange={handleChange} className='opacity-60' />
-          
-    
           <ContainerTextLinks>
             <p>Do want to change your name?
               <SpanRed onClick={()=>{
@@ -75,15 +68,13 @@ export default function Profile() {
               <LinkBlue onClick={handleSignOut}>Sign Out</LinkBlue>
             </p>
           </ContainerTextLinks>
-
-          <button type='submit' className=' flex items-center justify-center w-full bg-blue-700 text-white px-7 py-3 uppercase rounded text-sm font-medium hover:bg-blue-800 active:bg-blue-900 shadow-md hover:shadow-lg transition duration-150 ease-in-out'>
-            <FcHome className='text-2xl bg-rose-300  rounded-full mr-2'/>
-            Sell Or Rent your Home
-          </button>
-
-          {/* <SubmitFormButton type='submit'>Sell Or Rent your Home</SubmitFormButton> */}
-      
         </form>
+        <button type='submit' className='mt-6 flex items-center justify-center w-full bg-blue-700 text-white px-7 py-3 uppercase rounded text-sm font-medium hover:bg-blue-800 active:bg-blue-900 shadow-md hover:shadow-lg transition duration-150 ease-in-out'>
+            <Link to="/create-listing" className='flex items-center justify-center'>
+              <FcHome className='text-3xl bg-red-200 p-1 border-2 rounded-full mr-2'/>
+              Sell Or Rent your Home
+            </Link>
+        </button>
       </ContainerFormProfile>
   </Section>
   )
