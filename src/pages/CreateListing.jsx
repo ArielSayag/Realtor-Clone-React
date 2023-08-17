@@ -3,15 +3,15 @@ import { Main,H1,PHeadLine,RadioButton,InputForm ,TextAreaForm,InputFile} from '
 import { SubmitFormButton } from '../styledSaas/SignCss';
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { getAuth } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
-import { addDoc ,  collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase"; 
 import { useNavigate } from 'react-router-dom';
 
 function CreateListing() {
-  const nevigate=useNavigate();
+  const navigate=useNavigate();
   const auth=getAuth();
   const [geoLocationEnabled,setGeoLocationEnabled]=useState(true);
   const [loading,setLoading]=useState(false);
@@ -147,23 +147,26 @@ function CreateListing() {
         toast.error("Images not uploaded")
         return ;
       });
-
-      const formDataCopy={
+      debugger
+      const formDataCopy = {
         ...formData,
-        imgUrls,
+        ...(imgUrls && imgUrls.length > 0 && { imgUrls }), // Only add if imgUrls is not empty
         geoLocation,
         timestamp: serverTimestamp(),
+        userRef: auth.currentUser.uid,
       };
+      
       delete formDataCopy.images;
       !formDataCopy.offer &&  delete formDataCopy.discountPrice;
       delete formDataCopy.latitude;
       delete formDataCopy.longitude;
+      console.log(formDataCopy)
+      const docRef = await addDoc(collection(db, "listings"), formDataCopy);
 
-      const docRef= await addDoc(collection(db,"listings").formDataCopy);
       setLoading(false)
       toast.success("Listing created !");
 
-      nevigate(`/category/${formDataCopy.type}/${docRef.id}`)
+      navigate(`/category/${formDataCopy.type}/${docRef.id}`);
     }
   }
   if(loading){
