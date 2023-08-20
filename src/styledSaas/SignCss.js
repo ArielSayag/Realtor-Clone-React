@@ -233,3 +233,34 @@ export const ORdiv=styled.div`
     border-color: rgb(209 213 219 / var(--tw-border-opacity));
   }
 `;
+
+export const H2=styled.h2`
+font-size: 1.5rem/* 24px */;
+line-height: 2rem/* 32px */;
+text-align: center;
+font-weight: 600;
+margin-bottom: 1.5rem/* 24px */;
+margin-top: 1.5rem/* 24px */;
+`;
+
+
+export const MyListingUl=styled.ul`
+  @media (min-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1536px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  margin-bottom: 1.5rem/* 24px */;
+  margin-top: 1.5rem/* 24px */;
+`;

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {H1,ContainerFormProfile,InputForm,ContainerTextLinks,SpanRed,LinkBlue,Section} from "../styledSaas/SignCss";
+import {H1,ContainerFormProfile,InputForm,ContainerTextLinks,SpanRed,LinkBlue,Section,H2,MyListingUl } from "../styledSaas/SignCss";
 import {FcHome} from "react-icons/fc";
 import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import {Link} from "react-router-dom";
 import ListingItem from '../components/ListingItem';
+import styled from '@emotion/styled';
 
 export default function Profile() {
   const auth=getAuth();
@@ -78,7 +79,18 @@ export default function Profile() {
     fetchUserListings()
   },[auth.currentUser.uid])
 
-  console.log(listings)
+  const onDelete=async(id)=>{
+    if(window.confirm("are you sure you want to delete?")){
+      await deleteDoc(doc(db,"listings",id));
+      const updatedListings=listings.filter((listing)=> listing.id!==id)
+      setListings(updatedListings)
+      toast.success("Successfully delete the listing")
+    }
+  }
+
+  const onEdit=(id)=>{
+    navigate(`/edit-listing/${id}`)
+  }
 
 
   return (
@@ -114,12 +126,16 @@ export default function Profile() {
   <div className='max-w-6xl px-3 mt-6 mx-auto'>
     {!loading && listings.length > 0 && (
       <>
-        <h2 className='text-2xl text-center font-semibold mb-6 mt-6'>My Listings</h2>
-        <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mt-6 mb-6'>
+        <H2>My Listings</H2>
+        <MyListingUl>
           {listings.map((listing) => (
-            <ListingItem key={listing.id} id={listing.id} listing={listing.data} />
+            <ListingItem key={listing.id} 
+                         id={listing.id} 
+                         listing={listing.data} 
+                         onDelete={()=>onDelete(listing.id)} 
+                         onEdit={()=>onEdit(listing.id)} />
           ))}
-        </ul>
+        </MyListingUl>
       </>
     )}
   </div>

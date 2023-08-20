@@ -1,13 +1,12 @@
 import React from 'react'
 import Moment from 'react-moment'
 import { Link } from 'react-router-dom'
-import {MdLocationOn} from 'react-icons/md';
-import styled from '@emotion/styled';
+import {MdLocationOn , MdEdit} from 'react-icons/md';
 import { LiMyList ,ImgMyList ,FooterDiv,FooterDivIcon,AddressText,NameText,PriceText,FooterBottomDiv,FooterBottomSeconde,FooterText } from "../styledSaas/ListingItemCss";
+import {FaTrash} from "react-icons/fa";
 
 
-
-function ListingItem({listing,id}) {
+function ListingItem({listing,id,onDelete,onEdit}) {
   return (
     <LiMyList>
       <Link className='content' to={`/category/${listing.type}/${id}`}>
@@ -37,6 +36,8 @@ function ListingItem({listing,id}) {
             
         </FooterDiv>
       </Link>
+      {onDelete && (<FaTrash onClick={()=>onDelete(listing.id)} className='absolute bottom-2 right-2 h-[14px] cursor-pointer text-red-500' />)}
+      {onEdit && (<MdEdit onClick={()=>onEdit(listing.id)} className='absolute bottom-2 right-8 h-4 cursor-pointer' />)}
     </LiMyList>
   )
 }
