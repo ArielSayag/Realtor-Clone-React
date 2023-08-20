@@ -100,10 +100,6 @@ function CreateListing() {
         toast.error("Please enter a valid address");
         return;
       }
-      // else{
-      //   geoLocation.lat=latitude;
-      //   geoLocation.lng=longitude;
-      // }
       
       const storeImage =async (img)=>{
 
@@ -148,10 +144,12 @@ function CreateListing() {
         toast.error("Images not uploaded")
         return ;
       });
-      
+  
+
       const formDataCopy = {
         ...formData,
-        ...(imgUrls && imgUrls.length > 0 && { imgUrls }), // Only add if imgUrls is not empty
+        imgUrls,
+        // ...(imgUrls && imgUrls.length > 0 && { imgUrls }), // Only add if imgUrls is not empty
         geoLocation,
         timestamp: serverTimestamp(),
         userRef: auth.currentUser.uid,
