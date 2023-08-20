@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+// MyListing Page
 export const H1=styled.h1`
   font-size: 1.875rem/* 30px */;
   line-height: 2.25rem/* 36px */;
@@ -119,4 +120,40 @@ export const InputFile=styled.input`
     --tw-border-opacity: 1;
     border-color: rgb(71 85 105 / var(--tw-border-opacity));
   }
+`;
+
+// single listing
+
+export const ShareIconDiv=styled.div`
+  position: fixed;
+  top: 13%;
+  right: 3%;
+  z-index: 10;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  cursor: pointer;
+  border-radius: 9999px;
+  border-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  width: 3rem/* 48px */;
+  height: 3rem/* 48px */;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CopiedText=styled.p`
+  position:fixed;
+  top:23%;
+  right:7%;
+  font-weight: 600;
+  border-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  border-radius: 0.375rem/* 6px */;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  z-index: 10;
+  padding: 0.5rem/* 8px */;
 `;

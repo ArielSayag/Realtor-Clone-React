@@ -6,7 +6,9 @@ import Spinner from '../components/Spinner';
 import { Swiper,SwiperSlide } from "swiper/react";
 import SwiperCore, {EffectFade , Autoplay, Navigation , Pagination} from "swiper/modules";
 import "swiper/css/bundle";
-
+import { FaShare, FaMapMarkerAlt, FaBed, FaBath, FaParking, FaChair} from "react-icons/fa";
+import {ShareIconDiv , CopiedText} from "../styledSaas/ListingCss";
+import styled from '@emotion/styled';
 
 function Listing() {
 
@@ -14,6 +16,8 @@ function Listing() {
   const [listing,setListing]=useState(null);
   const [loading,setLoading]=useState(true);
   // SwiperCore.use([Autoplay,Navigation,Pagination]);
+
+  const [shareLinkCopied,setShareLinkCopied]=useState(false);
 
   useEffect(()=>{
     const fetchListing = async() =>{
@@ -47,9 +51,25 @@ function Listing() {
           </SwiperSlide>
         ))}
       </Swiper>
+      <ShareIconDiv 
+        onClick={()=>{
+          navigator.clipboard.writeText(window.location.href)
+          setShareLinkCopied(true);
+          setTimeout(()=>{
+            setShareLinkCopied(false)
+          },2000)
+        }}>
+        <FaShare className='text-lg text-slate-500'/>
+      </ShareIconDiv>
+      {shareLinkCopied && (
+        <CopiedText>
+          Link copied!
+        </CopiedText>
+      )}
 
     </main>
   )
 }
 
-export default Listing
+export default Listing;
+
