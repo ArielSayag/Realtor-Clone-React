@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Main,H1,PHeadLine,RadioButton,InputForm ,TextAreaForm,InputFile} from '../styledSaas/ListingCss'
 import { SubmitFormButton } from '../styledSaas/SignCss';
 import Spinner from '../components/Spinner';
@@ -6,15 +6,16 @@ import { toast } from 'react-toastify';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { getAuth } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {  collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-function CreateListing() {
+function EditListing() {
   const navigate=useNavigate();
   const auth=getAuth();
   const [geoLocationEnabled,setGeoLocationEnabled]=useState(true);
   const [loading,setLoading]=useState(false);
+  const [listing,setListing]=useState(null);
 
   const [formData,setFormData]=useState({
     type:"rent",
@@ -32,6 +33,8 @@ function CreateListing() {
     longitude:0.0,
     images:{},
   });
+
+
   const {
     type,
     name,
@@ -46,7 +49,40 @@ function CreateListing() {
     discountPrice,
     latitude,
     longitude,
-    images}=formData;
+    images
+  }=formData;
+
+  const params=useParams();
+
+   //check if the owner of the listing 
+  useEffect(()=>{
+    if(listing && listing.userRef !== auth.currentUser.uid){
+      toast.error("You can not edit this listing  ")
+      navigate("/");
+    }
+  },[auth.currentUser.uid,listing,navigate])
+
+  useEffect(()=>{
+    setLoading(true);
+    const fetchListing=async()=>{
+      const docRef=doc(db,"listings",params.listingId);
+      const docSnap=await getDoc(docRef);
+      if(docSnap.exists()){
+        setListing(docSnap.data())
+        setFormData({ ...docSnap.data()})
+        setLoading(false);
+
+      }else{
+        navigate("/")
+        toast.error("Listing does not found");
+      }
+
+    }
+    fetchListing()
+  },[navigate,params.listingId])
+
+ 
+
 
   const handleChangeButton=(e)=>{
 
@@ -90,11 +126,12 @@ function CreateListing() {
     if(geoLocationEnabled){
       const response =await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`);
       const data=await response.json()
+      
       geoLocation.lat=data.results[0]?.geometry.location.lat ?? 0;
       geoLocation.lng=data.results[0]?.geometry.location.lng ?? 0;
 
       location= data.status === "ZERO_RESULTS" && undefined;
-
+      
       if(location===undefined ){//|| location.includes("undefined")
         setLoading(false);
         toast.error("Please enter a valid address");
@@ -161,11 +198,12 @@ function CreateListing() {
       !formDataCopy.offer &&  delete formDataCopy.discountPrice;
       delete formDataCopy.latitude;
       delete formDataCopy.longitude;
-      console.log(formDataCopy)
-      const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+
+      const docRef = doc(db, "listings", params.listingId);
+      await updateDoc(docRef, formDataCopy);
 
       setLoading(false)
-      toast.success("Listing created !");
+      toast.success("Listing Edited !");
 
       navigate(`/category/${formDataCopy.type}/${docRef.id}`);
     }
@@ -176,7 +214,7 @@ function CreateListing() {
   
   return (
     <Main className='max-w-md px-2 mx-auto '>
-      <H1>Create a Listing</H1>
+      <H1>Edit Listing</H1>
       <form onSubmit={handleOnSubmit}>
         <PHeadLine><span className='text-red-500'>*</span>Sell / Rent</PHeadLine>
         <div className='flex'>
@@ -268,7 +306,7 @@ function CreateListing() {
           <InputFile type='file' id="images" onChange={handleChangeButton} accept=".jpg,.png,.jpeg" multiple required/>
         </div>
    
-        <SubmitFormButton type='submit'>Create Listing</SubmitFormButton>
+        <SubmitFormButton type='submit'>Edit Listing</SubmitFormButton>
         <div className='mt-6'></div>
       </form>
       
@@ -276,4 +314,4 @@ function CreateListing() {
   )
 }
 
-export default CreateListing
+export default EditListing
