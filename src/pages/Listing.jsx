@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth";
 import { db } from '../firebase';
 import Spinner from '../components/Spinner';
 import { Swiper,SwiperSlide } from "swiper/react";
-import SwiperCore, {EffectFade , Autoplay, Navigation , Pagination} from "swiper/modules";
+import  {EffectFade , Autoplay, Navigation , Pagination} from "swiper/modules";
 import "swiper/css/bundle";
 import { FaShare, FaMapMarkerAlt, FaBed, FaBath, FaParking, FaChair} from "react-icons/fa";
 import {ListingLi ,ListingUl , ShareIconDiv , CopiedText , MainDiv ,LeftDiv , ListingName ,ListingAddress ,MainDivOffer , ListingType ,ListingOffer} from "../styledSaas/ListingCss";
 import Contact from "../components/Content";
-import styled from '@emotion/styled';
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 function Listing() {
 
@@ -32,13 +32,13 @@ function Listing() {
         setLoading(false);
       }
     }
-
     fetchListing();
   },[params.listingId])
 
   if(loading){
     return <Spinner/>
   }
+
 
   return (
     <main>
@@ -139,9 +139,26 @@ function Listing() {
           )}
         </LeftDiv>
 
+    {/* right section */}
+        <div className='w-full h-[200px] md:h-[400px] z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2'> 
+          <MapContainer 
+            center={[listing.geoLocation.lat, listing.geoLocation.lng]}
+            zoom={13}
+            scrollWheelZoom={false}
+            style={{ height: "100%", width: "100%" }}>
 
-        <div className='bg-blue-500 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden'> 
-
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker   
+            position={[listing.geoLocation.lat, listing.geoLocation.lng]}
+            >
+              <Popup>
+                {listing.address}
+              </Popup>
+            </Marker>
+          </MapContainer>
         </div>
       </MainDiv>
     </main>

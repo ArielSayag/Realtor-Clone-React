@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import {H1,ContainerFormProfile,InputForm,ContainerTextLinks,SpanRed,LinkBlue,Section,H2,MyListingUl } from "../styledSaas/SignCss";
 import {FcHome} from "react-icons/fc";
 import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import {Link} from "react-router-dom";
 import ListingItem from '../components/ListingItem';
-import styled from '@emotion/styled';
+
 
 export default function Profile() {
   const auth=getAuth();
