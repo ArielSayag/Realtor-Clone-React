@@ -7,7 +7,7 @@ import { Swiper,SwiperSlide } from "swiper/react";
 import SwiperCore, {EffectFade , Autoplay, Navigation , Pagination} from "swiper/modules";
 import "swiper/css/bundle";
 import { FaShare, FaMapMarkerAlt, FaBed, FaBath, FaParking, FaChair} from "react-icons/fa";
-import {ShareIconDiv , CopiedText} from "../styledSaas/ListingCss";
+import {ListingLi ,ListingUl , ShareIconDiv , CopiedText , MainDiv ,LeftDiv , ListingName ,ListingAddress ,MainDivOffer , ListingType ,ListingOffer} from "../styledSaas/ListingCss";
 import styled from '@emotion/styled';
 
 function Listing() {
@@ -67,6 +67,67 @@ function Listing() {
         </CopiedText>
       )}
 
+
+      <MainDiv>
+        <LeftDiv>
+          <ListingName>
+            {listing.name} - ${listing.offer ? listing.discountPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",") 
+              : listing.regularPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",") }
+            {listing.type==="rent" && " / month"}
+          </ListingName>
+
+          <ListingAddress>
+            <FaMapMarkerAlt className='text-green-700 mr-1' />
+            {listing.address}
+          </ListingAddress>
+
+          <MainDivOffer>
+            <ListingType>
+              {listing.type==="rent"?"Rent":"Sale"}
+            </ListingType>
+            {listing.offer && (
+                <ListingOffer >${(+listing.regularPrice)-(+listing.discountPrice)} discount</ListingOffer>
+            )}
+          </MainDivOffer>
+
+          <p className='mt-3 mb-3 '> 
+            <span className='font-semibold '>
+              Description - 
+            </span> 
+            {listing.description}
+          </p>
+          <div className='flex'>
+            <ListingUl> 
+              <ListingLi>
+                <FaBed className="text-lg mr-1" />
+                {+listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : "1 Bed"}
+              </ListingLi>
+
+              <ListingLi>
+                <FaBath className="text-lg mr-1" />
+                {+listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : "1 Bath"}
+              </ListingLi>
+
+              <ListingLi>
+                <FaParking className="text-lg mr-1" />
+                {listing.parking ? "Parking spot" : "No parking"}
+              </ListingLi>
+
+              <ListingLi>
+                <FaChair className="text-lg mr-1" />
+                {listing.furnished ? "Furnished" : "Not furnished"}
+              </ListingLi>
+            </ListingUl>
+
+          </div>
+
+        </LeftDiv>
+
+
+        <div className='bg-blue-500 w-full h-[200px] lg-[400px] z-10 overflow-x-hidden'> 
+
+        </div>
+      </MainDiv>
     </main>
   )
 }
