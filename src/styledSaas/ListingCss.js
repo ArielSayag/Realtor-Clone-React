@@ -211,8 +211,7 @@ display: flex;
 justify-content: flex-start;
 align-items: center;
 --tw-space-x-reverse: 0;
-margin-right: calc(1rem * var(--tw-space-x-reverse));
-margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+
 width: 75%;
 `;
 
@@ -220,6 +219,7 @@ export const ListingType=styled.p`
 --tw-bg-opacity: 1;
 background-color: rgb(153 27 27 / var(--tw-bg-opacity));
 width: 100%;
+margin-right: 4px;
 max-width: 200px;
 border-radius: 0.375rem/* 6px */;
 padding: 0.25rem/* 4px */;
@@ -235,6 +235,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #
 export const ListingOffer=styled.p`
 width: 100%;
 max-width: 200px;
+
 --tw-bg-opacity: 1;
 background-color: rgb(22 101 52 / var(--tw-bg-opacity));
 border-radius: 0.375rem/* 6px */;

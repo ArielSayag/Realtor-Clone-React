@@ -1,6 +1,7 @@
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import { getAuth } from "firebase/auth";
 import { db } from '../firebase';
 import Spinner from '../components/Spinner';
 import { Swiper,SwiperSlide } from "swiper/react";
@@ -8,16 +9,19 @@ import SwiperCore, {EffectFade , Autoplay, Navigation , Pagination} from "swiper
 import "swiper/css/bundle";
 import { FaShare, FaMapMarkerAlt, FaBed, FaBath, FaParking, FaChair} from "react-icons/fa";
 import {ListingLi ,ListingUl , ShareIconDiv , CopiedText , MainDiv ,LeftDiv , ListingName ,ListingAddress ,MainDivOffer , ListingType ,ListingOffer} from "../styledSaas/ListingCss";
+import Contact from "../components/Content";
 import styled from '@emotion/styled';
 
 function Listing() {
 
   const params=useParams();
+  const auth=getAuth();
   const [listing,setListing]=useState(null);
   const [loading,setLoading]=useState(true);
   // SwiperCore.use([Autoplay,Navigation,Pagination]);
 
   const [shareLinkCopied,setShareLinkCopied]=useState(false);
+  const [contactLandlord,setContactLandlord]=useState(false)
 
   useEffect(()=>{
     const fetchListing = async() =>{
@@ -120,7 +124,19 @@ function Listing() {
             </ListingUl>
 
           </div>
-
+          {listing.userRef !== auth.currentUser?.uid && !contactLandlord && (
+            <div className="mt-6">
+              <button
+                onClick={() => setContactLandlord(true)}
+                className="px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg w-full text-center transition duration-150 ease-in-out "
+              >
+                Contact Landlord
+              </button>
+            </div>
+          )}
+          {contactLandlord && (
+            <Contact userRef={listing.userRef} listing={listing} />
+          )}
         </LeftDiv>
 
 
