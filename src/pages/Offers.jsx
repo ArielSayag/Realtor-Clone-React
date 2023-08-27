@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Spinner from "../components/Spinner";
 import { db } from '../firebase';
 import { collection, getDocs, limit, orderBy, query, startAfter, where } from 'firebase/firestore';
-import styled from '@emotion/styled';
+
 import { MainDiv , H1 ,UlOffers , SecondDiv ,Button  } from "../styledSaas/OfferCss";
 import ListingItem from '../components/ListingItem';
 import { toast } from 'react-toastify';
